@@ -14,6 +14,7 @@
             background-color: #1a1a2e;
             color: #e5e5e5;
         }
+
         .section-container {
             min-height: 100vh;
             display: flex;
@@ -22,26 +23,59 @@
             padding: 4rem 1rem;
         }
         .card {
-            background-color: #2e2e42;
+            position: relative;
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             border-radius: 1rem;
             padding: 2rem;
             box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, outline 0.3s ease-in-out;
-            outline: 2px solid transparent; /* Default transparent outline */
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            z-index: 10;
+            overflow: hidden;
         }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            border-radius: 1rem;
+            background: linear-gradient(45deg, #FF00FF, #00BFFF, #FF00FF, #00BFFF);
+            background-size: 400% 400%;
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.3s ease-in-out;
+        }
+
         .card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 20px 25px rgba(0, 0, 0, 0.3);
-            outline: 2px solid #48cae4; /* Color outline on hover */
+            box-shadow: 0 0 20px rgba(72, 202, 228, 0.6);
         }
+
+        .card:hover::before {
+            opacity: 1;
+            animation: glowing-outline 4s linear infinite;
+        }
+
+        @keyframes glowing-outline {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
         .social-icon {
             fill: #e5e5e5;
-            transition: fill 0.3s, transform 0.3s;
+            transition: fill 0.3s, transform 0.3s, filter 0.3s;
         }
         .social-icon:hover {
             fill: #48cae4;
             transform: translateY(-3px) scale(1.1);
+            filter: drop-shadow(0 0 8px #48cae4);
         }
+
         /* Mobile sidebar specific styles */
         .sidebar {
             position: fixed;
@@ -62,6 +96,11 @@
         }
         .sidebar.open {
             transform: translateX(0);
+        }
+        .highlight {
+            color: #48cae4;
+            font-weight: 700;
+            text-shadow: 0 0 5px #48cae4;
         }
     </style>
 </head>
@@ -101,16 +140,16 @@
         <button id="close-button" class="self-end mb-8 text-white focus:outline-none">
             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-            </svg>
-        </button>
-        <nav class="flex flex-col space-y-6">
-            <a href="#about" class="text-white hover:text-cyan-400 transition duration-300 text-2xl" onclick="closeSidebar()">About</a>
-            <a href="#experience" class="text-white hover:text-cyan-400 transition duration-300 text-2xl" onclick="closeSidebar()">Experience</a>
-            <a href="#projects" class="text-white hover:text-cyan-400 transition duration-300 text-2xl" onclick="closeSidebar()">Projects</a>
-            <a href="#skills" class="text-white hover:text-cyan-400 transition duration-300 text-2xl" onclick="closeSidebar()">Skills</a>
-            <a href="#education" class="text-white hover:text-cyan-400 transition duration-300 text-2xl" onclick="closeSidebar()">Education</a>
-        </nav>
-    </div>
+                </svg>
+            </button>
+            <nav class="flex flex-col space-y-6">
+                <a href="#about" class="text-white hover:text-cyan-400 transition duration-300 text-2xl nav-link">About</a>
+                <a href="#experience" class="text-white hover:text-cyan-400 transition duration-300 text-2xl nav-link">Experience</a>
+                <a href="#projects" class="text-white hover:text-cyan-400 transition duration-300 text-2xl nav-link">Projects</a>
+                <a href="#skills" class="text-white hover:text-cyan-400 transition duration-300 text-2xl nav-link">Skills</a>
+                <a href="#education" class="text-white hover:text-cyan-400 transition duration-300 text-2xl nav-link">Education</a>
+            </nav>
+        </div>
 
     <main class="container mx-auto px-4">
         
@@ -123,7 +162,7 @@
                 <div class="w-full md:w-2/3 text-center md:text-left">
                     <h2 class="text-5xl font-bold mb-4 text-white">Vinit Vithalrai Shenvi</h2>
                     <p class="text-lg leading-relaxed text-gray-300">
-                        A knowledge-driven catalyst, quick to absorb and quicker to amplify insights into meaningful, high-impact results. Serving as a Strategic Planner and Project Manager at Tata Electronics, I lead cross-functional initiatives from vision to execution, focusing on the digitalization of the industry and preparing it for future advancements.
+                        A knowledge-driven catalyst, quick to absorb and quicker to amplify insights into meaningful, high-impact results. Serving as a Strategic Planner and Project Manager at <span class="highlight">Tata Electronics</span>, I lead cross-functional initiatives from vision to execution, focusing on the digitalization of the industry and preparing it for future advancements.
                     </p>
                     <div class="mt-6 flex flex-wrap justify-center md:justify-start gap-4 text-gray-400 text-sm">
                         <span>+91 9606634643</span>
@@ -141,27 +180,27 @@
                 <!-- Native - Urban Company -->
                 <div class="card experience-card">
                     <h3 class="text-2xl font-semibold text-cyan-400">Category Manager II</h3>
-                    <p class="text-gray-300">Native - Urban Company | July 2025 - Present</p>
+                    <p class="text-gray-300">Native - Urban Company | <span class="highlight">July 2025 - Present</span></p>
                     <p class="text-gray-400 text-sm mt-2">Business & Strategy</p>
                     <ul class="list-disc list-inside mt-4 text-gray-400 space-y-2">
                         <li>Led next-gen product development as Tech Lead, from ideation to market launch.</li>
                         <li>Oversaw end-to-end supply chain operations for Native Products across India, UAE, Singapore, and Saudi Arabia.</li>
-                        <li>Spearheaded the design and development of a cost-efficient, high-performance Smart Lock, decreasing customer contact rate from 5.5% to 2.3%.</li>
-                        <li>Reduced product defect rate to below 1.5% and production costs by 23.3%.</li>
+                        <li>Spearheaded the design and development of a cost-efficient, high-performance Smart Lock, decreasing customer contact rate from <span class="highlight">5.5% to 2.3%</span>.</li>
+                        <li>Reduced product defect rate to below <span class="highlight">1.5%</span> and production costs by <span class="highlight">23.3%</span>.</li>
                     </ul>
                 </div>
 
                 <!-- Tata Electronics -->
                 <div class="card experience-card">
                     <h3 class="text-2xl font-semibold text-cyan-400">Operations Program Manager/Product Management</h3>
-                    <p class="text-gray-300">Tata Electronics Private Limited | July 2024 - July 2025</p>
+                    <p class="text-gray-300">Tata Electronics Private Limited | <span class="highlight">July 2024 - July 2025</span></p>
                     <p class="text-gray-400 text-sm mt-2">Business Strategy - Office of CEO</p>
                     <ul class="list-disc list-inside mt-4 text-gray-400 space-y-2">
-                        <li>Partnered with Apple to implement HEMI, a tool for real-time yield tracking, reducing RCCA time from a day to 15 minutes.</li>
-                        <li>Developed a new SOP for operator deployment for 20K Employees, which reduced attrition by 2% and increased production by 2.81%.</li>
+                        <li>Partnered with Apple to implement HEMI, a tool for real-time yield tracking, reducing RCCA time from a day to <span class="highlight">15 minutes</span>.</li>
+                        <li>Developed a new SOP for operator deployment for <span class="highlight">20K Employees</span>, which reduced attrition by <span class="highlight">2%</span> and increased production by <span class="highlight">2.81%</span>.</li>
                         <li>Led Smart Factory Projects integrating advanced technologies like Generative AI and Digital twin technology.</li>
-                        <li>Collaborated with Apple on the Dristhi project, improving factory yield by 3.13%.</li>
-                        <li>Spearheaded end-to-end planning for new factory setups, resulting in a 70% reduction in unit production cost.</li>
+                        <li>Collaborated with Apple on the Dristhi project, improving factory yield by <span class="highlight">3.13%</span>.</li>
+                        <li>Spearheaded end-to-end planning for new factory setups, resulting in a <span class="highlight">70% reduction</span> in unit production cost.</li>
                     </ul>
                 </div>
 
@@ -170,7 +209,7 @@
                     <h3 class="text-2xl font-semibold text-cyan-400">Business Analyst Intern</h3>
                     <p class="text-gray-300">Genpact | Mar 2024 - Jul 2024</p>
                     <ul class="list-disc list-inside mt-4 text-gray-400 space-y-2">
-                        <li>Collaborated with clients to automate invoicing and delivery processes and developed a self-service dashboard using Power BI and SQL.</li>
+                        <li>Collaborated with clients to automate invoicing and delivery processes and developed a self-service dashboard using <span class="highlight">Power BI and SQL</span>.</li>
                     </ul>
                 </div>
 
@@ -179,8 +218,8 @@
                     <h3 class="text-2xl font-semibold text-cyan-400">Project Associate Intern</h3>
                     <p class="text-gray-300">PhNelCs Lab at Electronic System Engineering(ESE) department, IISc | Aug 2023 - Oct 2023</p>
                     <ul class="list-disc list-inside mt-4 text-gray-400 space-y-2">
-                        <li>Mechanical Lead- Worked on COMSOL Multiphysics and researched on Atomic Clock for DRDO.</li>
-                        <li>Designed the first ever Atmoic Clock heater with dimensions of 600x600 micrometers. (Applied for Patent)</li>
+                        <li>Mechanical Lead- Worked on <span class="highlight">COMSOL Multiphysics</span> and researched on Atomic Clock for DRDO.</li>
+                        <li>Designed the first ever Atmoic Clock heater with dimensions of <span class="highlight">600x600 micrometers</span>. (Applied for Patent)</li>
                     </ul>
                 </div>
 
@@ -189,8 +228,8 @@
                     <h3 class="text-2xl font-semibold text-cyan-400">Project Intern</h3>
                     <p class="text-gray-300">Aerospace Department at IISc | May 2023 - Aug 2023</p>
                     <ul class="list-disc list-inside mt-4 text-gray-400 space-y-2">
-                        <li>Worked on vision sensors and Microgravity projects, utilizing Python and C# for image sensing and gamification models.</li>
-                        <li>Contributed to the development of interactive applications using Unity for ArtPark, IISc.</li>
+                        <li>Worked on vision sensors and Microgravity projects, utilizing <span class="highlight">Python and C#</span> for image sensing and gamification models.</li>
+                        <li>Contributed to the development of interactive applications using <span class="highlight">Unity for ArtPark, IISc</span>.</li>
                         <li>Worked on the "GHATAK" flight project, a classified initiative by the Aeronautical Development Agency (ADA), DRDO.</li>
                     </ul>
                 </div>
@@ -206,7 +245,7 @@
                     <h3 class="text-2xl font-semibold text-cyan-400 mb-2">Pulse Jet Engine</h3>
                     <p class="text-gray-300 mb-4">Patent Owned - 2024</p>
                     <ul class="list-disc list-inside mt-4 text-gray-400 space-y-2">
-                        <li>Designed, simulated, and tested a miniaturized pulse jet engine for UAVs, achieving 10 ml fuel consumption for 1N of thrust.</li>
+                        <li>Designed, simulated, and tested a miniaturized pulse jet engine for UAVs, achieving <span class="highlight">10 ml fuel consumption for 1N of thrust</span>.</li>
                         <li>Developed a website for real-time monitoring and analysis of engine performance.</li>
                     </ul>
                 </div>
@@ -215,8 +254,8 @@
                     <h3 class="text-2xl font-semibold text-cyan-400 mb-2">Ornithopter ("Vritra Kamikaze ornithopter")</h3>
                     <p class="text-gray-300 mb-4">Patent Owned - 2024</p>
                     <ul class="list-disc list-inside mt-4 text-gray-400 space-y-2">
-                        <li>Optimized the RCS of a swarm drone to 0.15cm.</li>
-                        <li>Achieved 15km secured transmission range for data communication.</li>
+                        <li>Optimized the RCS of a swarm drone to <span class="highlight">0.15cm</span>.</li>
+                        <li>Achieved <span class="highlight">15km secured transmission range</span> for data communication.</li>
                     </ul>
                 </div>
                 <!-- Election Commission Website -->
@@ -224,8 +263,8 @@
                     <h3 class="text-2xl font-semibold text-cyan-400 mb-2">A website for the Election Commission of India</h3>
                     <p class="text-gray-300 mb-4">Apr 2022 - May 2022</p>
                     <ul class="list-disc list-inside mt-4 text-gray-400 space-y-2">
-                        <li>Simplified the application process for new voter IDs by enabling users to apply with their 10th-grade marksheet registration number.</li>
-                        <li>Built a website that sends a URL confirming eligibility for new voter ID applicants.</li>
+                        <li>Simplified the application process for new voter IDs by enabling users to apply with their <span class="highlight">10th-grade marksheet registration number</span>.</li>
+                        <li>Built a website that sends a URL confirming <span class="highlight">18+ eligibility</span> for new voter ID applicants.</li>
                     </ul>
                 </div>
                 <!-- All Terrain Vehicle -->
@@ -233,8 +272,8 @@
                     <h3 class="text-2xl font-semibold text-cyan-400 mb-2">All Terrain Vehicle- Electric vehicle-EV(E-Baja)</h3>
                     <p class="text-gray-300 mb-4">Jan 2022 - May 2022</p>
                     <ul class="list-disc list-inside mt-4 text-gray-400 space-y-2">
-                        <li>Designed customized spring suspensions with coil and dampers and the chassis with 40x50m dimension.</li>
-                        <li>Designed the Low voltage circuit using PCB for the EV and Hub motor connections for High Voltages.</li>
+                        <li>Designed customized spring suspensions with coil and dampers and the chassis with <span class="highlight">40x50m dimension</span>.</li>
+                        <li>Designed the Low voltage circuit using <span class="highlight">PCB</span> for the EV and Hub motor connections for High Voltages.</li>
                     </ul>
                 </div>
                 <!-- Fitness Gaming Console -->
@@ -242,7 +281,7 @@
                     <h3 class="text-2xl font-semibold text-cyan-400 mb-2">Fitness Gaming console using Unity Game Development and Python</h3>
                     <p class="text-gray-300 mb-4">Jan 2023 - Jan 2023</p>
                     <ul class="list-disc list-inside mt-4 text-gray-400 space-y-2">
-                        <li>Created computer vision-based games using C#, body sensors, Arduino, and TCP sockets for seamless Unity gameplay.</li>
+                        <li>Created computer vision-based games using <span class="highlight">C#, body sensors, Arduino, and TCP sockets</span> for seamless Unity gameplay.</li>
                     </ul>
                 </div>
             </div>
@@ -286,23 +325,23 @@
                 <div class="card achievements-card">
                     <h3 class="text-2xl font-semibold text-cyan-400 mb-4">Key Achievements</h3>
                     <ul class="list-disc list-inside text-gray-400 space-y-2">
-                        <li>Speaker at Android Study Jam at Google, Bangalore. Continuing as a member at GDG Bangalore.</li>
-                        <li>NPTEL Star, received an offer for pursuing MTech/PhD at IIT Roorkee.</li>
-                        <li>Published 4 papers in 3 International Journals.</li>
-                        <li>Secured 1st place in Division level swimming and Karnataka VTU Bangalore Central Zone Hockey Championship.</li>
-                        <li>1st place in National Level Project Exhibition at BIT, Bangalore.</li>
-                        <li>Secured 2nd place at 'Design and Innovation Clinic 2023' conducted by CMTI.</li>
+                        <li><span class="highlight">Speaker at Android Study Jam at Google, Bangalore</span>. Continuing as a member at GDG Bangalore.</li>
+                        <li>NPTEL Star, received an offer for pursuing <span class="highlight">MTech/PhD at IIT Roorkee</span>.</li>
+                        <li>Published <span class="highlight">4 papers in 3 International Journals</span>.</li>
+                        <li>Secured <span class="highlight">1st place</span> in Division level swimming and Karnataka VTU Bangalore Central Zone Hockey Championship.</li>
+                        <li><span class="highlight">1st place</span> in National Level Project Exhibition at BIT, Bangalore.</li>
+                        <li>Secured <span class="highlight">2nd place</span> at 'Design and Innovation Clinic 2023' conducted by CMTI.</li>
                     </ul>
                 </div>
                 <!-- Certifications -->
                 <div class="card certifications-card">
                     <h3 class="text-2xl font-semibold text-cyan-400 mb-4">Certifications</h3>
                     <ul class="list-disc list-inside text-gray-400 space-y-2">
-                        <li>Certified in PMP®, CAPM®, and Six Sigma.</li>
+                        <li>Certified in <span class="highlight">PMP®, CAPM®, and Six Sigma</span>.</li>
                         <li>Completed NPTEL course on Advanced Robotics from IIT- Kanpur.</li>
                         <li>Course on Geospatial and Archaeological studies by IIRS, Dehradun (ISRO).</li>
                         <li>Professional Certification in Google Data Analytics.</li>
-                        <li>Acquired 30+ certifications through Udemy and completed 12+ courses on Coursera.</li>
+                        <li>Acquired <span class="highlight">30+ certifications</span> through Udemy and completed <span class="highlight">12+ courses</span> on Coursera.</li>
                     </ul>
                 </div>
             </div>
@@ -316,14 +355,14 @@
                 <div class="card">
                     <h3 class="text-2xl font-semibold text-cyan-400">Bachelor of Engineering (Dual Degree)</h3>
                     <p class="text-gray-300">MS Ramaiah Institute of Technology</p>
-                    <p class="text-gray-400 text-sm mt-2">Dec 2020 - June 2024 | GPA-8.72</p>
-                    <p class="mt-2 text-gray-400">Gold Medalist- Best Outgoing Graduating Student 2024. (Student of the Year)</p>
+                    <p class="text-gray-400 text-sm mt-2">Dec 2020 - June 2024 | <span class="highlight">GPA-8.72</span></p>
+                    <p class="mt-2 text-gray-400">Gold Medalist- Best Outgoing Graduating Student 2024. (<span class="highlight">Student of the Year</span>)</p>
                 </div>
                 <!-- H. Benne -->
                 <div class="card">
                     <h3 class="text-2xl font-semibold text-cyan-400">Pre University in Science</h3>
                     <p class="text-gray-300">H. Benne Government PU College</p>
-                    <p class="text-gray-400 text-sm mt-2">June 2019 - June 2020 | Percentage-94.66</p>
+                    <p class="text-gray-400 text-sm mt-2">June 2019 - June 2020 | <span class="highlight">Percentage-94.66</span></p>
                 </div>
             </div>
         </section>
@@ -357,8 +396,20 @@
                     <path d="M12.03 2.5c-5.26 0-9.52 4.26-9.52 9.52 0 1.93.58 3.73 1.58 5.24l-1.63 4.41 4.54-1.63c1.47.8 3.1 1.24 4.93 1.24h.02c5.25 0 9.51-4.26 9.51-9.51s-4.25-9.5-9.5-9.5zm0 17.5c-1.5 0-2.92-.4-4.14-1.13l-.29-.17-3.05 1.1.88-3.15-.19-.3c-.8-.94-1.27-2.14-1.27-3.41 0-3.95 3.2-7.15 7.15-7.15 1.93 0 3.73.75 5.09 2.11 1.36 1.36 2.11 3.16 2.11 5.09s-1.25 4.98-2.11 5.84l-.1.09c-.94.9-2.14 1.4-3.41 1.4zm5.1-6.85c-.28-.14-.7-.35-.98-.48-.28-.14-.5-.14-.72.14-.22.28-.56.67-.68.81-.13.14-.26.16-.49.07s-.9-.33-1.7-1.04c-1.26-1.12-2.1-2.5-2.35-2.92-.25-.41-.03-.64.1-.78.1-.14.22-.27.35-.41.13-.14.18-.24.28-.42.1-.19.05-.35-.02-.48s-.68-1.63-.94-2.22c-.25-.57-.5-.48-.68-.48-.19 0-.41-.03-.59-.03-.22 0-.58.05-.88.35-.29.29-1.1.92-1.1 2.25 0 1.33 1.13 2.6 1.29 2.8s2.21 3.55 5.37 4.87c.78.33 1.4.52 1.88.67.75.24 1.44.2 1.98.13.59-.08 1.8-.73 2.05-1.48.25-.75.25-1.39.18-1.5.01-.01-.02-.01-.03-.01z"/>
                 </svg>
             </a>
+            <!-- Facebook -->
+            <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                <svg class="social-icon w-8 h-8" viewBox="0 0 24 24">
+                    <path d="M24 12c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385h-2.731v-3.46h2.731v-2.133c0-2.712 1.652-4.218 4.168-4.218 1.185 0 2.383.211 2.383.211v2.611h-1.332c-1.319 0-1.758.818-1.758 1.656v1.93h2.934l-.474 3.46h-2.46v8.385c5.737-.9 10.125-5.864 10.125-11.854z"/>
+                </svg>
+            </a>
+            <!-- Instagram -->
+            <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                <svg class="social-icon w-8 h-8" viewBox="0 0 24 24">
+                    <path d="M12 0c-3.216 0-3.601.014-4.885.069-1.272.055-2.148.22-2.909.524-.76.304-1.449.82-2.106 1.478-.658.657-1.173 1.346-1.478 2.106-.304.761-.47 1.637-.525 2.91-.054 1.284-.069 1.668-.069 4.884s.014 3.601.069 4.885c.055 1.272.22 2.148.525 2.909.304.76.819 1.449 1.478 2.106.657.658 1.346 1.173 2.106 1.478.761.304 1.637.47 2.91.525 1.284.054 1.668.069 4.884.069s3.601-.014 4.885-.069c1.272-.055 2.148-.22 2.909-.525.76-.304 1.449-.819 2.106-1.478.658-.657 1.173-1.346 1.478-2.106.304-.761.47-1.637.525-2.91.054-1.284.069-1.668.069-4.884s-.014-3.601-.069-4.885c-.055-1.272-.22-2.148-.525-2.909-.304-.76-.819-1.449-1.478-2.106-.657-.658-1.346-1.173-2.106-1.478-.761-.304-1.637-.47-2.91-.525-1.284-.054-1.668-.069-4.884-.069zm0 1.8c3.21-.001 3.585.012 4.862.066 1.192.051 1.776.21 2.228.397.464.195.845.424 1.22.8.375.374.604.756.8.1.2.452.346 1.036.397 2.228.054 1.277.066 1.652.066 4.862s-.012 3.585-.066 4.862c-.051 1.192-.21 1.776-.397 2.228-.195.464-.424.845-.8 1.22-.374.375-.756.604-1.22.8-.452.2-1.036.346-2.228.397-1.277.054-1.652.066-4.862.066s-3.585-.012-4.862-.066c-1.192-.051-1.776-.21-2.228-.397-.464-.195-.845-.424-1.22-.8-.374-.375-.604-.756-.8-1.22-.2-.452-.346-1.036-.397-2.228-.054-1.277-.066-1.652-.066-4.862s.012-3.585.066-4.862c.051-1.192.21-1.776.397-2.228.195-.464.424-.845.8-1.22.375-.374.756-.604 1.22-.8.452-.2 1.036-.346 2.228-.397 1.277-.054 1.652-.066 4.862-.066zm0 3.6c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8zm0 1.8c3.418 0 6.2 2.782 6.2 6.2s-2.782 6.2-6.2 6.2-6.2-2.782-6.2-6.2 2.782-6.2 6.2-6.2zm4.84-2.81c0 .798-.646 1.445-1.445 1.445-.798 0-1.445-.647-1.445-1.445s.647-1.445 1.445-1.445c.799 0 1.445.647 1.445 1.445z"/>
+                </svg>
+            </a>
         </div>
-        <p>Copy right 2025 [vinit❤️shenvi].</p>
+        <p>Built with ❤️ and powered by GSAP.</p>
     </footer>
 
     <script>
@@ -381,6 +432,17 @@
                     }
                 }
             );
+             gsap.from(section.querySelectorAll('.highlight'), {
+                opacity: 0,
+                y: 10,
+                stagger: 0.1,
+                delay: 0.5,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: section,
+                    start: "top 85%",
+                }
+            });
         }
 
         // Target each section and apply the animation
@@ -388,31 +450,25 @@
             setupSectionAnimation(section);
         });
 
-        // Simple smooth scroll for navigation links
-        document.querySelectorAll('nav a').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                document.querySelector(targetId).scrollIntoView({
-                    behavior: 'smooth'
-                });
-                // Close sidebar after clicking a link
-                closeSidebar();
-            });
-        });
-
         // Mobile sidebar functionality
         const menuButton = document.getElementById('menu-button');
         const closeButton = document.getElementById('close-button');
         const sidebar = document.getElementById('sidebar');
+        const navLinks = document.querySelectorAll('.nav-link');
 
         menuButton.addEventListener('click', () => {
             sidebar.classList.add('open');
         });
-
-        function closeSidebar() {
+        
+        closeButton.addEventListener('click', () => {
             sidebar.classList.remove('open');
-        }
+        });
+        
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                sidebar.classList.remove('open');
+            });
+        });
 
     </script>
 </body>
