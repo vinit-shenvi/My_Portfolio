@@ -26,13 +26,42 @@
             border-radius: 1rem;
             padding: 2rem;
             box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, outline 0.3s ease-in-out;
+            outline: 2px solid transparent; /* Default transparent outline */
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px rgba(0, 0, 0, 0.3);
+            outline: 2px solid #48cae4; /* Color outline on hover */
         }
         .social-icon {
             fill: #e5e5e5;
-            transition: fill 0.3s;
+            transition: fill 0.3s, transform 0.3s;
         }
         .social-icon:hover {
             fill: #48cae4;
+            transform: translateY(-3px) scale(1.1);
+        }
+        /* Mobile sidebar specific styles */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 75%;
+            max-width: 300px;
+            height: 100%;
+            background-color: #1a1a2e;
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out;
+            z-index: 100;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+        }
+        .sidebar.open {
+            transform: translateX(0);
         }
     </style>
 </head>
@@ -40,16 +69,48 @@
 
     <header class="bg-indigo-900 bg-opacity-40 shadow-lg py-6 sticky top-0 z-50">
         <div class="container mx-auto px-4 flex justify-between items-center">
-            <h1 class="text-3xl font-bold text-white">Vinit Shenvi</h1>
-            <nav>
+            <!-- Logo Section -->
+            <div class="flex items-center space-x-2">
+                <svg class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm3.84 14.54a5 5 0 0 1-7.68 0l-.13-.23a4.98 4.98 0 0 1 7.94-.13zM12 18a6 6 0 1 1 6-6 6 6 0 0 1-6 6z"/>
+                    <path d="M12 9a3 3 0 1 1-3 3 3 3 0 0 1 3-3m0 2a1 1 0 1 0 1 1 1 1 0 0 0-1-1z"/>
+                </svg>
+                <span class="text-xl font-bold text-white hidden sm:block">Vinit Shenvi</span>
+            </div>
+
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:block">
                 <a href="#about" class="text-white hover:text-cyan-400 mx-2 md:mx-4 transition duration-300">About</a>
                 <a href="#experience" class="text-white hover:text-cyan-400 mx-2 md:mx-4 transition duration-300">Experience</a>
                 <a href="#projects" class="text-white hover:text-cyan-400 mx-2 md:mx-4 transition duration-300">Projects</a>
                 <a href="#skills" class="text-white hover:text-cyan-400 mx-2 md:mx-4 transition duration-300">Skills</a>
                 <a href="#education" class="text-white hover:text-cyan-400 mx-2 md:mx-4 transition duration-300">Education</a>
             </nav>
+
+            <!-- Mobile Menu Button -->
+            <button id="menu-button" class="md:hidden text-white focus:outline-none">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
         </div>
     </header>
+
+    <!-- Mobile Sidebar Menu -->
+    <div id="sidebar" class="sidebar">
+        <button id="close-button" class="self-end mb-8 text-white focus:outline-none">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+        <nav class="flex flex-col space-y-6">
+            <a href="#about" class="text-white hover:text-cyan-400 transition duration-300 text-2xl" onclick="closeSidebar()">About</a>
+            <a href="#experience" class="text-white hover:text-cyan-400 transition duration-300 text-2xl" onclick="closeSidebar()">Experience</a>
+            <a href="#projects" class="text-white hover:text-cyan-400 transition duration-300 text-2xl" onclick="closeSidebar()">Projects</a>
+            <a href="#skills" class="text-white hover:text-cyan-400 transition duration-300 text-2xl" onclick="closeSidebar()">Skills</a>
+            <a href="#education" class="text-white hover:text-cyan-400 transition duration-300 text-2xl" onclick="closeSidebar()">Education</a>
+        </nav>
+    </div>
 
     <main class="container mx-auto px-4">
         
@@ -331,11 +392,28 @@
         document.querySelectorAll('nav a').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                const targetId = this.getAttribute('href');
+                document.querySelector(targetId).scrollIntoView({
                     behavior: 'smooth'
                 });
+                // Close sidebar after clicking a link
+                closeSidebar();
             });
         });
+
+        // Mobile sidebar functionality
+        const menuButton = document.getElementById('menu-button');
+        const closeButton = document.getElementById('close-button');
+        const sidebar = document.getElementById('sidebar');
+
+        menuButton.addEventListener('click', () => {
+            sidebar.classList.add('open');
+        });
+
+        function closeSidebar() {
+            sidebar.classList.remove('open');
+        }
+
     </script>
 </body>
 </html>
